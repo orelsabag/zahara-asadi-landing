@@ -10,6 +10,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <script>
+        // Apply theme as early as possible to prevent flash. Default = dark.
+        (function() {
+            try {
+                var saved = localStorage.getItem('zahara-theme');
+                document.documentElement.setAttribute('data-theme', saved || 'dark');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+
     <style>
         /* ===== ROOT TOKENS ===== */
         :root, [data-theme="dark"] {
@@ -1936,11 +1948,10 @@
     </a>
 
     <script>
-        // Theme management — applied early to avoid flicker
+        // Theme management — applied early to avoid flicker. Default = dark.
         (function() {
             const saved = localStorage.getItem('zahara-theme');
-            const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-            const initialTheme = saved || (prefersLight ? 'light' : 'dark');
+            const initialTheme = saved || 'dark';
             document.documentElement.setAttribute('data-theme', initialTheme);
         })();
 
