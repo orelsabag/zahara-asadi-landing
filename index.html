@@ -2065,11 +2065,12 @@
             const btn = form.querySelector('.form-submit');
             const original = btn.textContent;
 
-            const name = form.name.value.trim();
-            const phone = form.phone.value.trim();
-            const subject = form.subject.value.trim();
-            const message = form.message.value.trim();
-            const honey = form.website.value.trim();
+            const els = form.elements;
+            const name = (els['name'].value || '').trim();
+            const phone = (els['phone'].value || '').trim();
+            const subject = (els['subject'].value || '').trim();
+            const message = (els['message'].value || '').trim();
+            const honey = (els['website'].value || '').trim();
 
             if (honey) { return; } // bot honeypot
 
@@ -2100,7 +2101,7 @@
                     body: JSON.stringify(payload)
                 });
                 const json = await res.json().catch(() => ({}));
-                if (res.ok && (json.success === 'true' || json.success === true)) {
+                if (res.ok) {
                     btn.textContent = 'הפנייה נשלחה בהצלחה ✓';
                     btn.style.background = 'linear-gradient(135deg, #34d399, #10b981)';
                     form.reset();
