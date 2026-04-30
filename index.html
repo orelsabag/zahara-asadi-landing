@@ -1362,6 +1362,43 @@
             line-height: 1.7;
         }
 
+        .footer-built {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 0.95rem;
+            color: var(--text-faint);
+            padding: 8px 16px;
+            border: 1px solid var(--line-soft);
+            border-radius: 50px;
+            background: var(--card-bg);
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .footer-built:hover {
+            border-color: rgba(141, 105, 255, 0.4);
+            background: rgba(141, 105, 255, 0.06);
+            color: var(--text);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px -8px rgba(141, 105, 255, 0.35);
+        }
+
+        .footer-built img {
+            height: 22px;
+            width: auto;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .footer-built:hover img {
+            transform: scale(1.06) rotate(-2deg);
+        }
+
+        [data-theme="light"] .footer-built img {
+            filter: brightness(0.85);
+        }
+
         .footer-text a {
             color: var(--gold);
             transition: color 0.3s;
@@ -1936,9 +1973,11 @@
             </div>
             <p class="footer-text">
                 &copy; 2026 — מטפלת זוגית ומשפחתית מוסמכת | בהסמכה לפסיכותרפיה CBT
-                <br>
-                נבנה באהבה על ידי <a href="#">Tero AI</a>
             </p>
+            <a href="https://sol-ix.ai" target="_blank" rel="noopener" class="footer-built" aria-label="פתיחת אתר Solix AI בחלון חדש">
+                <span>נבנה באהבה על ידי</span>
+                <img src="images/solix-logo.svg" alt="Solix AI">
+            </a>
         </div>
     </footer>
 
