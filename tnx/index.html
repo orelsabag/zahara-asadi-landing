@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תודה רבה | זהרה אסדי</title>
+    <meta name="description" content="פנייתך התקבלה. זהרה אסדי תחזור אליך בשיחה דיסקרטית בהקדם.">
+    <meta name="robots" content="noindex,nofollow">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        (function() {
+            try {
+                var saved = localStorage.getItem('zahara-theme');
+                document.documentElement.setAttribute('data-theme', saved || 'dark');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+
+    <style>
+        :root, [data-theme="dark"] {
+            --bg: #0a0a14;
+            --bg-soft: #11111e;
+            --gold: #d4af7f;
+            --gold-light: #f3deb6;
+            --gold-dark: #a17b4a;
+            --text: #ece8de;
+            --text-bright: #ffffff;
+            --text-muted: #94907f;
+            --text-faint: #5d594c;
+            --line: rgba(212, 175, 127, 0.12);
+            --line-soft: rgba(255, 255, 255, 0.06);
+            --card-bg: rgba(255, 255, 255, 0.025);
+            --card-bg-strong: rgba(255, 255, 255, 0.04);
+            --noise-opacity: 0.5;
+            --noise-blend: overlay;
+
+            --sans: 'Assistant', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --shadow-glow: 0 20px 60px -20px rgba(212, 175, 127, 0.35);
+            --shadow-card: 0 30px 80px -40px rgba(0, 0, 0, 0.6);
+            --radius-sm: 12px;
+            --radius-md: 18px;
+            --radius-lg: 28px;
+        }
+
+        [data-theme="light"] {
+            --bg: #faf6ec;
+            --bg-soft: #f3ebd6;
+            --gold: #b8884a;
+            --gold-light: #c89a5a;
+            --gold-dark: #8c6432;
+            --text: #2a261d;
+            --text-bright: #15110a;
+            --text-muted: #6b6552;
+            --text-faint: #a39c87;
+            --line: rgba(184, 136, 74, 0.22);
+            --line-soft: rgba(0, 0, 0, 0.06);
+            --card-bg: rgba(255, 255, 255, 0.55);
+            --card-bg-strong: rgba(255, 255, 255, 0.8);
+            --noise-opacity: 0.18;
+            --noise-blend: multiply;
+            --shadow-glow: 0 20px 60px -20px rgba(184, 136, 74, 0.25);
+            --shadow-card: 0 30px 80px -40px rgba(120, 90, 50, 0.25);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            font-weight: 400;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.83 0 0 0 0 0.69 0 0 0 0 0.5 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: var(--noise-opacity);
+            mix-blend-mode: var(--noise-blend);
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse 70% 60% at 50% 0%, rgba(212, 175, 127, 0.13), transparent 60%),
+                radial-gradient(ellipse 60% 50% at 50% 100%, rgba(212, 175, 127, 0.07), transparent 60%);
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 28px;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+
+        /* NAVBAR — minimal */
+        .navbar {
+            padding: 22px 0;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: opacity 0.3s;
+        }
+
+        .nav-logo:hover { opacity: 0.85; }
+
+        .nav-logo .mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--sans);
+            font-weight: 700;
+            color: var(--bg);
+            font-size: 1.1rem;
+            box-shadow: 0 4px 16px rgba(212, 175, 127, 0.25);
+        }
+
+        .nav-logo .text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .nav-logo .name {
+            font-family: var(--sans);
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            letter-spacing: -0.01em;
+        }
+
+        .nav-logo .role {
+            font-size: 0.7rem;
+            color: var(--text-faint);
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--card-bg-strong);
+            border: 1px solid var(--line);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow: hidden;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--gold);
+            color: var(--gold-light);
+            transform: rotate(15deg);
+            box-shadow: 0 4px 16px -4px rgba(212, 175, 127, 0.4);
+        }
+
+        .theme-toggle .icon {
+            position: absolute;
+            font-size: 1.05rem;
+            width: 1.05rem;
+            height: 1.05rem;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            stroke: currentColor;
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .theme-toggle .icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+        .theme-toggle .icon-moon { opacity: 1; transform: rotate(0) scale(1); }
+        [data-theme="light"] .theme-toggle .icon-sun { opacity: 1; transform: rotate(0) scale(1); }
+        [data-theme="light"] .theme-toggle .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.4); }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 0 100px;
+        }
+
+        .thanks-card {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 64px 56px;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% 0%, rgba(212, 175, 127, 0.12), transparent 70%),
+                var(--card-bg);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow-card);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+        }
+
+        .thanks-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(to left, transparent, var(--gold), transparent);
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes checkmarkDraw {
+            0% { stroke-dashoffset: 100; opacity: 0; }
+            30% { opacity: 1; }
+            100% { stroke-dashoffset: 0; opacity: 1; }
+        }
+
+        @keyframes circleDraw {
+            0% { stroke-dashoffset: 320; opacity: 0; }
+            30% { opacity: 1; }
+            100% { stroke-dashoffset: 0; opacity: 1; }
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(0.85); opacity: 0.7; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .check-wrap {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 32px;
+        }
+
+        .check-wrap::before,
+        .check-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 175, 127, 0.4);
+            animation: pulseRing 2.5s ease-out infinite;
+        }
+
+        .check-wrap::after {
+            animation-delay: 1.2s;
+        }
+
+        .check-icon {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(212, 175, 127, 0.18), rgba(212, 175, 127, 0.04));
+            border: 1px solid rgba(212, 175, 127, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .check-icon svg {
+            width: 56px;
+            height: 56px;
+            stroke: var(--gold-light);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .check-icon .circle {
+            stroke-dasharray: 320;
+            stroke-dashoffset: 320;
+            animation: circleDraw 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+        }
+
+        .check-icon .check {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: checkmarkDraw 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards;
+        }
+
+        .label {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 3.5px;
+            color: var(--gold);
+            margin-bottom: 18px;
+            font-weight: 600;
+            justify-content: center;
+        }
+
+        .label::before, .label::after {
+            content: '';
+            width: 28px;
+            height: 1px;
+            background: linear-gradient(to left, var(--gold), transparent);
+        }
+
+        .label::after {
+            background: linear-gradient(to right, var(--gold), transparent);
+        }
+
+        h1 {
+            font-family: var(--sans);
+            font-size: clamp(2.2rem, 4.5vw, 3rem);
+            font-weight: 700;
+            color: var(--text-bright);
+            line-height: 1.2;
+            margin-bottom: 14px;
+            letter-spacing: -0.025em;
+        }
+
+        h1 .accent {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 60%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .lead {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            line-height: 1.85;
+            font-weight: 400;
+            margin-bottom: 36px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Info strip */
+        .info-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            padding: 28px 24px;
+            margin-bottom: 40px;
+            background: var(--card-bg-strong);
+            border: 1px solid var(--line-soft);
+            border-radius: var(--radius-md);
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-icon {
+            width: 44px;
+            height: 44px;
+            margin: 0 auto 10px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(212, 175, 127, 0.18), rgba(212, 175, 127, 0.04));
+            border: 1px solid rgba(212, 175, 127, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+        }
+
+        .info-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .info-title {
+            font-size: 0.78rem;
+            color: var(--text-faint);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            color: var(--text-bright);
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            position: relative;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold) 50%, var(--gold-dark));
+            color: var(--bg);
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-size: 1.02rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--sans);
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.8s;
+        }
+
+        .btn-primary:hover::before { transform: translateX(100%); }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px -10px rgba(212, 175, 127, 0.55);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg-strong);
+            color: var(--text-bright);
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-size: 1.02rem;
+            font-weight: 500;
+            border: 1px solid var(--line);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--sans);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold-light);
+            background: rgba(212, 175, 127, 0.06);
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: #ffffff !important;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 1.02rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--sans);
+            box-shadow: 0 8px 24px -10px rgba(37, 211, 102, 0.5);
+        }
+
+        .btn-whatsapp:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 36px -10px rgba(37, 211, 102, 0.7);
+        }
+
+        .btn-primary svg, .btn-secondary svg, .btn-whatsapp svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .btn-whatsapp svg path[fill] { fill: currentColor; stroke: none; }
+
+        /* Footer */
+        .footer {
+            padding: 36px 0;
+            border-top: 1px solid var(--line-soft);
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 0.92rem;
+            color: var(--text-faint);
+            font-weight: 400;
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 0 20px; }
+            .thanks-card { padding: 48px 28px; }
+            .info-strip { grid-template-columns: 1fr; gap: 18px; }
+            .lead { font-size: 1.05rem; }
+            .actions { flex-direction: column; }
+            .btn-primary, .btn-secondary, .btn-whatsapp { width: 100%; justify-content: center; }
+            .nav-logo .role { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+            <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+            <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+            <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="m9 12 2 2 4-4"/></symbol>
+            <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+            <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></symbol>
+            <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></symbol>
+            <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 3.4L3 21" stroke-width="1.8"/><path d="M9 10c.5 2.5 2.5 4.5 5 5l1.5-1.5 2.5 1v2c-.5 1-1.5 1.5-3 1.5-3.5 0-7.5-4-7.5-7.5 0-1.5.5-2.5 1.5-3h2l1 2.5L9 10z" fill="currentColor" stroke="none"/></symbol>
+        </defs>
+    </svg>
+
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-inner">
+                <a href="/" class="nav-logo">
+                    <div class="mark">ז</div>
+                    <div class="text">
+                        <span class="name">זהרה אסדי</span>
+                        <span class="role">מטפלת זוגית ומשפחתית</span>
+                    </div>
+                </a>
+                <button class="theme-toggle" id="themeToggle" aria-label="החלפת מצב תצוגה" type="button">
+                    <svg class="icon icon-sun"><use href="#i-sun"/></svg>
+                    <svg class="icon icon-moon"><use href="#i-moon"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="container">
+            <div class="thanks-card">
+                <div class="check-wrap">
+                    <div class="check-icon">
+                        <svg viewBox="0 0 60 60">
+                            <circle class="circle" cx="30" cy="30" r="26"/>
+                            <path class="check" d="M19 30 L27 38 L42 22"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="label">פנייתך התקבלה</div>
+
+                <h1>תודה רבה<br><span class="accent">פנייתך נשלחה בהצלחה</span></h1>
+
+                <p class="lead">
+                    אחזור אליך בשיחה דיסקרטית בהקדם.<br>
+                    זהו הצעד הראשון — והחשוב ביותר.
+                </p>
+
+                <div class="info-strip">
+                    <div class="info-item">
+                        <div class="info-icon"><svg><use href="#i-clock"/></svg></div>
+                        <div class="info-title">זמן חזרה</div>
+                        <div class="info-value">תוך 24 שעות</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><svg><use href="#i-phone"/></svg></div>
+                        <div class="info-title">סוג השיחה</div>
+                        <div class="info-value">היכרות קצרה, ללא עלות</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><svg><use href="#i-shield"/></svg></div>
+                        <div class="info-title">דיסקרטיות</div>
+                        <div class="info-value">סודיות מלאה</div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a href="/" class="btn-primary">
+                        <svg><use href="#i-arrow-right"/></svg>
+                        חזרה לדף הבית
+                    </a>
+                    <a href="https://wa.me/972542374194" target="_blank" rel="noopener" class="btn-whatsapp">
+                        <svg><use href="#i-whatsapp"/></svg>
+                        WhatsApp ישיר
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                &copy; 2026 — זהרה אסדי | מטפלת זוגית ומשפחתית מוסמכת | בהסמכה לפסיכותרפיה CBT
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('themeToggle');
+        btn.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('zahara-theme', next);
+        });
+    </script>
+</body>
+</html>

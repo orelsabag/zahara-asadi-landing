@@ -2104,6 +2104,8 @@
                     btn.textContent = 'הפנייה נשלחה בהצלחה ✓';
                     btn.style.background = 'linear-gradient(135deg, #34d399, #10b981)';
                     form.reset();
+                    setTimeout(() => { window.location.href = '/tnx'; }, 600);
+                    return;
                 } else {
                     btn.textContent = 'שגיאה בשליחה — נסה שוב';
                     btn.style.background = 'linear-gradient(135deg, #f87171, #ef4444)';
