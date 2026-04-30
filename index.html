@@ -11,13 +11,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
-        // Apply theme as early as possible to prevent flash. Default = dark.
+        // Apply theme + lang as early as possible to prevent flash. Defaults: dark / he.
         (function() {
             try {
-                var saved = localStorage.getItem('zahara-theme');
-                document.documentElement.setAttribute('data-theme', saved || 'dark');
+                var savedTheme = localStorage.getItem('zahara-theme');
+                document.documentElement.setAttribute('data-theme', savedTheme || 'dark');
             } catch (e) {
                 document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            try {
+                var savedLang = localStorage.getItem('zahara-lang') || 'he';
+                document.documentElement.setAttribute('lang', savedLang);
+                document.documentElement.setAttribute('dir', 'rtl');
+            } catch (e) {
+                document.documentElement.setAttribute('lang', 'he');
             }
         })();
     </script>
@@ -379,6 +386,45 @@
         }
 
         .nav-cta::after { display: none !important; }
+
+        /* LANG TOGGLE */
+        .lang-toggle {
+            position: relative;
+            min-width: 44px;
+            height: 38px;
+            padding: 0 10px;
+            border-radius: 50px;
+            background: var(--card-bg-strong);
+            border: 1px solid var(--line);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            font-family: var(--sans);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+        }
+
+        .lang-toggle:hover {
+            border-color: var(--gold);
+            color: var(--gold-light);
+            box-shadow: 0 4px 16px -4px rgba(212, 175, 127, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .lang-toggle .lang-toggle-text {
+            line-height: 1;
+        }
+
+        .lang-toggle-mobile {
+            display: none;
+            margin-right: auto;
+            margin-left: 8px;
+        }
 
         /* THEME TOGGLE */
         .theme-toggle {
@@ -1488,6 +1534,7 @@
             .nav-links { display: none; }
             .mobile-toggle { display: block; }
             .theme-toggle-mobile { display: flex; }
+            .lang-toggle-mobile { display: flex; }
 
             .nav-links.active {
                 display: flex;
@@ -1583,6 +1630,7 @@
             <symbol id="i-cbt" viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 0-8 8c0 3 1.5 5.5 4 7v3l4-2 4 2v-3c2.5-1.5 4-4 4-7a8 8 0 0 0-8-8z"/><path d="M9 11h6M9 14h4"/></symbol>
             <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
             <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+            <symbol id="i-globe-lang" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13 13 0 0 1 0 18 13 13 0 0 1 0-18z"/></symbol>
         </defs>
     </svg>
 
@@ -1590,25 +1638,33 @@
     <nav class="navbar" id="navbar">
         <div class="container">
             <a href="#" class="nav-logo">
-                <div class="mark">ז</div>
+                <div class="mark" data-i18n-html="nav.mark">ז</div>
                 <div class="text">
-                    <span class="name">זהרה אסדי</span>
-                    <span class="role">מטפלת זוגית ומשפחתית</span>
+                    <span class="name" data-i18n="nav.name">זהרה אסדי</span>
+                    <span class="role" data-i18n="nav.role">מטפלת זוגית ומשפחתית</span>
                 </div>
             </a>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#about">אודות</a></li>
-                <li><a href="#services">תחומי טיפול</a></li>
-                <li><a href="#process">תהליך העבודה</a></li>
-                <li><a href="#contact">צור קשר</a></li>
+                <li><a href="#about" data-i18n="nav.about">אודות</a></li>
+                <li><a href="#services" data-i18n="nav.services">תחומי טיפול</a></li>
+                <li><a href="#process" data-i18n="nav.process">תהליך העבודה</a></li>
+                <li><a href="#contact" data-i18n="nav.contact">צור קשר</a></li>
+                <li>
+                    <button class="lang-toggle" id="langToggle" aria-label="החלפת שפה" type="button">
+                        <span class="lang-toggle-text">AR</span>
+                    </button>
+                </li>
                 <li>
                     <button class="theme-toggle" id="themeToggle" aria-label="החלפת מצב תצוגה" type="button">
                         <svg class="icon icon-sun"><use href="#i-sun"/></svg>
                         <svg class="icon icon-moon"><use href="#i-moon"/></svg>
                     </button>
                 </li>
-                <li><a href="tel:0542374194" class="nav-cta">קביעת פגישה</a></li>
+                <li><a href="tel:0542374194" class="nav-cta" data-i18n="nav.cta">קביעת פגישה</a></li>
             </ul>
+            <button class="lang-toggle lang-toggle-mobile" id="langToggleMobile" aria-label="החלפת שפה" type="button">
+                <span class="lang-toggle-text">AR</span>
+            </button>
             <button class="theme-toggle theme-toggle-mobile" id="themeToggleMobile" aria-label="החלפת מצב תצוגה" type="button">
                 <svg class="icon icon-sun"><use href="#i-sun"/></svg>
                 <svg class="icon icon-moon"><use href="#i-moon"/></svg>
@@ -1631,39 +1687,39 @@
             <div class="hero-content">
                 <div class="hero-badge reveal">
                     <span class="dot"></span>
-                    <span>מטפלת זוגית ומשפחתית מוסמכת</span>
+                    <span data-i18n="hero.badge">מטפלת זוגית ומשפחתית מוסמכת</span>
                 </div>
-                <h1 class="reveal reveal-delay-1">מקום של<br><span class="accent">צמיחה, הקשבה<br>וחיבור מחדש</span></h1>
-                <p class="reveal reveal-delay-2">
+                <h1 class="reveal reveal-delay-1" data-i18n-html="hero.title">מקום של<br><span class="accent">צמיחה, הקשבה<br>וחיבור מחדש</span></h1>
+                <p class="reveal reveal-delay-2" data-i18n="hero.lead">
                     ליווי מקצועי ורגיש בתהליכי משבר זוגי, ניכור הורי וקונפליקטים משפחתיים.
                     מרחב בטוח לשינוי אמיתי, עם רגישות תרבותית מלאה וכלים מבוססי ראיות מעולם ה-CBT.
                 </p>
                 <div class="hero-buttons reveal reveal-delay-3">
                     <a href="tel:0542374194" class="btn-primary">
                         <svg class="icon"><use href="#i-phone"/></svg>
-                        קביעת שיחת היכרות
+                        <span data-i18n="hero.btn1">קביעת שיחת היכרות</span>
                     </a>
                     <a href="#services" class="btn-secondary">
-                        תחומי הטיפול
+                        <span data-i18n="hero.btn2">תחומי הטיפול</span>
                         <svg class="icon"><use href="#i-arrow-left"/></svg>
                     </a>
                 </div>
                 <div class="hero-stats reveal reveal-delay-4">
                     <div>
                         <div class="hero-stat-number">MSW</div>
-                        <div class="hero-stat-label">תואר שני בעבודה סוציאלית</div>
+                        <div class="hero-stat-label" data-i18n="hero.stat1">תואר שני בעבודה סוציאלית</div>
                     </div>
                     <div>
-                        <div class="hero-stat-number">מוסמכת</div>
-                        <div class="hero-stat-label">האגודה לטיפול זוגי ומשפחתי</div>
+                        <div class="hero-stat-number" data-i18n="hero.stat2num">מוסמכת</div>
+                        <div class="hero-stat-label" data-i18n="hero.stat2">האגודה לטיפול זוגי ומשפחתי</div>
                     </div>
                     <div>
                         <div class="hero-stat-number">CBT</div>
-                        <div class="hero-stat-label">בתהליך הסמכה לפסיכותרפיה</div>
+                        <div class="hero-stat-label" data-i18n="hero.stat3">בתהליך הסמכה לפסיכותרפיה</div>
                     </div>
                     <div>
-                        <div class="hero-stat-number">דיר אל-אסד</div>
-                        <div class="hero-stat-label">קליניקה פרטית</div>
+                        <div class="hero-stat-number" data-i18n="hero.stat4num">דיר אל-אסד</div>
+                        <div class="hero-stat-label" data-i18n="hero.stat4">קליניקה פרטית</div>
                     </div>
                 </div>
             </div>
@@ -1676,19 +1732,19 @@
             <div class="trust-items reveal">
                 <div class="trust-item">
                     <div class="trust-icon"><svg class="icon"><use href="#i-shield"/></svg></div>
-                    <span>דיסקרטיות מלאה</span>
+                    <span data-i18n="trust.1">דיסקרטיות מלאה</span>
                 </div>
                 <div class="trust-item">
                     <div class="trust-icon"><svg class="icon"><use href="#i-graduate"/></svg></div>
-                    <span>מקצועיות מוכרת</span>
+                    <span data-i18n="trust.2">מקצועיות מוכרת</span>
                 </div>
                 <div class="trust-item">
                     <div class="trust-icon"><svg class="icon"><use href="#i-handshake"/></svg></div>
-                    <span>רגישות תרבותית אמיתית</span>
+                    <span data-i18n="trust.3">רגישות תרבותית אמיתית</span>
                 </div>
                 <div class="trust-item">
                     <div class="trust-icon"><svg class="icon"><use href="#i-home"/></svg></div>
-                    <span>מרחב בטוח ומכבד</span>
+                    <span data-i18n="trust.4">מרחב בטוח ומכבד</span>
                 </div>
             </div>
         </div>
@@ -1706,26 +1762,26 @@
                     <div class="about-image-frame"></div>
                 </div>
                 <div class="reveal reveal-delay-2">
-                    <div class="section-label">אודות</div>
-                    <h2 class="section-title">זהרה אסדי — <em>מרחב של ריפוי</em></h2>
-                    <p class="section-subtitle" style="margin-bottom: 22px;">
+                    <div class="section-label" data-i18n="about.label">אודות</div>
+                    <h2 class="section-title" data-i18n-html="about.title">זהרה אסדי — <em>מרחב של ריפוי</em></h2>
+                    <p class="section-subtitle" style="margin-bottom: 22px;" data-i18n="about.p1">
                         מטפלת זוגית ומשפחתית מוסמכת מטעם האגודה הישראלית לטיפול זוגי ומשפחתי,
                         בעלת תואר שני (MSW) ותואר ראשון בעבודה סוציאלית.
                         כיום בתהליך הסמכה לפסיכותרפיה — טיפולי CBT.
                     </p>
-                    <p class="section-subtitle" style="margin-bottom: 22px;">
+                    <p class="section-subtitle" style="margin-bottom: 22px;" data-i18n="about.p2">
                         בעלת התמחות ייחודית בטיפול באובדן ושכול, וניסיון רב בעבודה עם משפחות
                         במצבי קונפליקט מורכבים. המרחב הטיפולי שלי בנוי על הקשבה עמוקה, כבוד הדדי
                         ורגישות תרבותית מלאה, לצד כלים מבוססי ראיות מעולם ה-CBT.
                     </p>
                     <div class="about-credentials">
-                        <span class="credential-tag featured">בהסמכה לפסיכותרפיה — CBT</span>
-                        <span class="credential-tag">טיפול זוגי</span>
-                        <span class="credential-tag">טיפול משפחתי</span>
-                        <span class="credential-tag">ניכור הורי</span>
-                        <span class="credential-tag">אובדן ושכול</span>
-                        <span class="credential-tag">הדרכת הורים</span>
-                        <span class="credential-tag">ליווי גירושין</span>
+                        <span class="credential-tag featured" data-i18n="about.tag.cbt">בהסמכה לפסיכותרפיה — CBT</span>
+                        <span class="credential-tag" data-i18n="about.tag.couple">טיפול זוגי</span>
+                        <span class="credential-tag" data-i18n="about.tag.family">טיפול משפחתי</span>
+                        <span class="credential-tag" data-i18n="about.tag.alienation">ניכור הורי</span>
+                        <span class="credential-tag" data-i18n="about.tag.grief">אובדן ושכול</span>
+                        <span class="credential-tag" data-i18n="about.tag.parenting">הדרכת הורים</span>
+                        <span class="credential-tag" data-i18n="about.tag.divorce">ליווי גירושין</span>
                     </div>
                 </div>
             </div>
@@ -1736,9 +1792,9 @@
     <section class="services" id="services">
         <div class="container">
             <div class="services-header reveal">
-                <div class="section-label">תחומי טיפול</div>
-                <h2 class="section-title">מענה מקצועי <em>לכל אתגר</em></h2>
-                <p class="section-subtitle">כל תהליך מותאם אישית, עם כלים מקצועיים ורגישות לעולם התרבותי והרגשי שלך</p>
+                <div class="section-label" data-i18n="services.label">תחומי טיפול</div>
+                <h2 class="section-title" data-i18n-html="services.title">מענה מקצועי <em>לכל אתגר</em></h2>
+                <p class="section-subtitle" data-i18n="services.lead">כל תהליך מותאם אישית, עם כלים מקצועיים ורגישות לעולם התרבותי והרגשי שלך</p>
             </div>
             <div class="services-grid">
                 <div class="service-card reveal reveal-delay-1">
@@ -1747,8 +1803,8 @@
                     </div>
                     <div class="service-body">
                         <div class="service-icon"><svg class="icon"><use href="#i-parent-child"/></svg></div>
-                        <h3 class="service-title">טיפול בניכור הורי</h3>
-                        <p class="service-desc">עבודה עם הורים וילדים על ריחוק ותיקון מערכת היחסים. שחזור הקשר ההורי בדרך בטוחה ומכבדת.</p>
+                        <h3 class="service-title" data-i18n="svc.alienation.title">טיפול בניכור הורי</h3>
+                        <p class="service-desc" data-i18n="svc.alienation.desc">עבודה עם הורים וילדים על ריחוק ותיקון מערכת היחסים. שחזור הקשר ההורי בדרך בטוחה ומכבדת.</p>
                     </div>
                 </div>
                 <div class="service-card reveal reveal-delay-2">
@@ -1757,8 +1813,8 @@
                     </div>
                     <div class="service-body">
                         <div class="service-icon"><svg class="icon"><use href="#i-couple"/></svg></div>
-                        <h3 class="service-title">טיפול זוגי במשבר</h3>
-                        <p class="service-desc">התמודדות עם ריחוק, שחיקה, בעיות אמון ותקשורת פוגענית. בניית דרך חדשה לחיבור.</p>
+                        <h3 class="service-title" data-i18n="svc.couple.title">טיפול זוגי במשבר</h3>
+                        <p class="service-desc" data-i18n="svc.couple.desc">התמודדות עם ריחוק, שחיקה, בעיות אמון ותקשורת פוגענית. בניית דרך חדשה לחיבור.</p>
                     </div>
                 </div>
                 <div class="service-card reveal reveal-delay-3">
@@ -1767,8 +1823,8 @@
                     </div>
                     <div class="service-body">
                         <div class="service-icon"><svg class="icon"><use href="#i-family"/></svg></div>
-                        <h3 class="service-title">טיפול משפחתי</h3>
-                        <p class="service-desc">ניהול מתחים בין-דוריים וקונפליקטים משפחתיים. יצירת שפה משותפת ושיח בריא במשפחה.</p>
+                        <h3 class="service-title" data-i18n="svc.family.title">טיפול משפחתי</h3>
+                        <p class="service-desc" data-i18n="svc.family.desc">ניהול מתחים בין-דוריים וקונפליקטים משפחתיים. יצירת שפה משותפת ושיח בריא במשפחה.</p>
                     </div>
                 </div>
                 <div class="service-card reveal reveal-delay-1">
@@ -1777,8 +1833,8 @@
                     </div>
                     <div class="service-body">
                         <div class="service-icon"><svg class="icon"><use href="#i-brain"/></svg></div>
-                        <h3 class="service-title">טיפול רגשי פרטני (CBT)</h3>
-                        <p class="service-desc">מענה לחרדה, דיכאון וויסות רגשי בכלים מבוססי ראיות. מרחב אישי להתבוננות פנימית וצמיחה.</p>
+                        <h3 class="service-title" data-i18n="svc.cbt.title">טיפול רגשי פרטני (CBT)</h3>
+                        <p class="service-desc" data-i18n="svc.cbt.desc">מענה לחרדה, דיכאון וויסות רגשי בכלים מבוססי ראיות. מרחב אישי להתבוננות פנימית וצמיחה.</p>
                     </div>
                 </div>
                 <div class="service-card reveal reveal-delay-2">
@@ -1787,8 +1843,8 @@
                     </div>
                     <div class="service-body">
                         <div class="service-icon"><svg class="icon"><use href="#i-clipboard"/></svg></div>
-                        <h3 class="service-title">ליווי בתהליך גירושין</h3>
-                        <p class="service-desc">ניווט תהליך הפרידה תוך שמירה על רווחת הילדים וצמצום נזקים רגשיים.</p>
+                        <h3 class="service-title" data-i18n="svc.divorce.title">ליווי בתהליך גירושין</h3>
+                        <p class="service-desc" data-i18n="svc.divorce.desc">ניווט תהליך הפרידה תוך שמירה על רווחת הילדים וצמצום נזקים רגשיים.</p>
                     </div>
                 </div>
                 <div class="service-card reveal reveal-delay-3">
@@ -1797,8 +1853,8 @@
                     </div>
                     <div class="service-body">
                         <div class="service-icon"><svg class="icon"><use href="#i-sprout"/></svg></div>
-                        <h3 class="service-title">הדרכת הורים</h3>
-                        <p class="service-desc">כלים מעשיים להורות במצבים מורכבים. חיזוק הביטחון ההורי וההקשבה לילד.</p>
+                        <h3 class="service-title" data-i18n="svc.parenting.title">הדרכת הורים</h3>
+                        <p class="service-desc" data-i18n="svc.parenting.desc">כלים מעשיים להורות במצבים מורכבים. חיזוק הביטחון ההורי וההקשבה לילד.</p>
                     </div>
                 </div>
             </div>
@@ -1809,24 +1865,24 @@
     <section class="values" id="values">
         <div class="container">
             <div class="values-header reveal">
-                <div class="section-label">הגישה שלי</div>
-                <h2 class="section-title">מה מייחד את <em>המרחב הטיפולי</em></h2>
+                <div class="section-label" data-i18n="values.label">הגישה שלי</div>
+                <h2 class="section-title" data-i18n-html="values.title">מה מייחד את <em>המרחב הטיפולי</em></h2>
             </div>
             <div class="values-grid">
                 <div class="value-card reveal reveal-delay-1">
                     <div class="value-icon"><svg class="icon"><use href="#i-shield"/></svg></div>
-                    <h3 class="value-title">דיסקרטיות מלאה</h3>
-                    <p class="value-desc">כל מה שנאמר בחדר הטיפול נשאר בחדר הטיפול. סודיות מוחלטת כבסיס לאמון.</p>
+                    <h3 class="value-title" data-i18n="val.1.title">דיסקרטיות מלאה</h3>
+                    <p class="value-desc" data-i18n="val.1.desc">כל מה שנאמר בחדר הטיפול נשאר בחדר הטיפול. סודיות מוחלטת כבסיס לאמון.</p>
                 </div>
                 <div class="value-card reveal reveal-delay-2">
                     <div class="value-icon"><svg class="icon"><use href="#i-target"/></svg></div>
-                    <h3 class="value-title">תהליך מדויק</h3>
-                    <p class="value-desc">גישה מובנית ומותאמת אישית. כל מפגש בנוי על יעדים ברורים ומדידים.</p>
+                    <h3 class="value-title" data-i18n="val.2.title">תהליך מדויק</h3>
+                    <p class="value-desc" data-i18n="val.2.desc">גישה מובנית ומותאמת אישית. כל מפגש בנוי על יעדים ברורים ומדידים.</p>
                 </div>
                 <div class="value-card reveal reveal-delay-3">
                     <div class="value-icon"><svg class="icon"><use href="#i-globe"/></svg></div>
-                    <h3 class="value-title">רגישות תרבותית</h3>
-                    <p class="value-desc">הבנה עמוקה של ההקשר התרבותי לצד מקצועיות קלינית. טיפול שמכבד את מי שאתה.</p>
+                    <h3 class="value-title" data-i18n="val.3.title">רגישות תרבותית</h3>
+                    <p class="value-desc" data-i18n="val.3.desc">הבנה עמוקה של ההקשר התרבותי לצד מקצועיות קלינית. טיפול שמכבד את מי שאתה.</p>
                 </div>
             </div>
         </div>
@@ -1836,44 +1892,44 @@
     <section class="process" id="process">
         <div class="container">
             <div class="process-header reveal">
-                <div class="section-label">איך זה עובד</div>
-                <h2 class="section-title">תהליך <em>העבודה</em></h2>
-                <p class="section-subtitle">חמישה שלבים מובנים שילוו אותך מהרגע הראשון ועד לסיום מוצלח</p>
+                <div class="section-label" data-i18n="proc.label">איך זה עובד</div>
+                <h2 class="section-title" data-i18n-html="proc.title">תהליך <em>העבודה</em></h2>
+                <p class="section-subtitle" data-i18n="proc.lead">חמישה שלבים מובנים שילוו אותך מהרגע הראשון ועד לסיום מוצלח</p>
             </div>
             <div class="process-timeline">
                 <div class="process-step reveal reveal-delay-1">
                     <div class="step-number">01</div>
                     <div class="step-content">
-                        <h3 class="step-title">שיחת היכרות קצרה</h3>
-                        <p class="step-desc">שיחה טלפונית ראשונית להכרות, הבנת הצורך ותיאום ציפיות. ללא עלות וללא מחויבות.</p>
+                        <h3 class="step-title" data-i18n="proc.1.title">שיחת היכרות קצרה</h3>
+                        <p class="step-desc" data-i18n="proc.1.desc">שיחה טלפונית ראשונית להכרות, הבנת הצורך ותיאום ציפיות. ללא עלות וללא מחויבות.</p>
                     </div>
                 </div>
                 <div class="process-step reveal reveal-delay-2">
                     <div class="step-number">02</div>
                     <div class="step-content">
-                        <h3 class="step-title">מפגש ראשון בקליניקה</h3>
-                        <p class="step-desc">פגישה מעמיקה להכרות, מיפוי המצב והגדרת מטרות הטיפול. בניית מרחב של אמון ובטחון.</p>
+                        <h3 class="step-title" data-i18n="proc.2.title">מפגש ראשון בקליניקה</h3>
+                        <p class="step-desc" data-i18n="proc.2.desc">פגישה מעמיקה להכרות, מיפוי המצב והגדרת מטרות הטיפול. בניית מרחב של אמון ובטחון.</p>
                     </div>
                 </div>
                 <div class="process-step reveal reveal-delay-3">
                     <div class="step-number">03</div>
                     <div class="step-content">
-                        <h3 class="step-title">בניית תהליך מותאם אישית</h3>
-                        <p class="step-desc">תכנון מסלול הטיפול בהתאם לצרכים הייחודיים שלך, עם כלים ושיטות מוכחות.</p>
+                        <h3 class="step-title" data-i18n="proc.3.title">בניית תהליך מותאם אישית</h3>
+                        <p class="step-desc" data-i18n="proc.3.desc">תכנון מסלול הטיפול בהתאם לצרכים הייחודיים שלך, עם כלים ושיטות מוכחות.</p>
                     </div>
                 </div>
                 <div class="process-step reveal reveal-delay-4">
                     <div class="step-number">04</div>
                     <div class="step-content">
-                        <h3 class="step-title">מפגשים שוטפים</h3>
-                        <p class="step-desc">טיפול רציף ועקבי עם מעקב אחר התקדמות. כל מפגש בונה על הקודם לקראת שינוי אמיתי.</p>
+                        <h3 class="step-title" data-i18n="proc.4.title">מפגשים שוטפים</h3>
+                        <p class="step-desc" data-i18n="proc.4.desc">טיפול רציף ועקבי עם מעקב אחר התקדמות. כל מפגש בונה על הקודם לקראת שינוי אמיתי.</p>
                     </div>
                 </div>
                 <div class="process-step reveal reveal-delay-5">
                     <div class="step-number">05</div>
                     <div class="step-content">
-                        <h3 class="step-title">סיכום והערכה מחדש</h3>
-                        <p class="step-desc">בחינת ההתקדמות, חיזוק הכלים שנרכשו וגיבוש תכנית להמשך עצמאי ומוצלח.</p>
+                        <h3 class="step-title" data-i18n="proc.5.title">סיכום והערכה מחדש</h3>
+                        <p class="step-desc" data-i18n="proc.5.desc">בחינת ההתקדמות, חיזוק הכלים שנרכשו וגיבוש תכנית להמשך עצמאי ומוצלח.</p>
                     </div>
                 </div>
             </div>
@@ -1885,11 +1941,11 @@
         <div class="container">
             <div class="quote-block reveal">
                 <div class="quote-mark">"</div>
-                <p class="quote-text">
+                <p class="quote-text" data-i18n="quote.text">
                     הצעד הראשון הוא תמיד הקשה ביותר, אבל ברגע שתיכנסו לחדר —
                     תגלו מרחב של הקשבה, כבוד וקבלה. אתם לא לבד בזה.
                 </p>
-                <p class="quote-author">זהרה אסדי</p>
+                <p class="quote-author" data-i18n="quote.author">זהרה אסדי</p>
             </div>
         </div>
     </section>
@@ -1899,9 +1955,9 @@
         <div class="container">
             <div class="contact-grid">
                 <div class="reveal">
-                    <div class="section-label">צור קשר</div>
-                    <h2 class="section-title">בואו נתחיל <em>לדבר</em></h2>
-                    <p class="section-subtitle" style="margin-bottom: 40px;">
+                    <div class="section-label" data-i18n="contact.label">צור קשר</div>
+                    <h2 class="section-title" data-i18n-html="contact.title">בואו נתחיל <em>לדבר</em></h2>
+                    <p class="section-subtitle" style="margin-bottom: 40px;" data-i18n="contact.lead">
                         השיחה הראשונה היא ללא עלות וללא מחויבות.
                         אשמח לשמוע ולהבין איך אוכל לעזור.
                     </p>
@@ -1909,55 +1965,55 @@
                         <a href="tel:0542374194" class="contact-item">
                             <div class="contact-icon"><svg class="icon"><use href="#i-phone"/></svg></div>
                             <div>
-                                <div class="contact-item-label">טלפון</div>
+                                <div class="contact-item-label" data-i18n="contact.phone">טלפון</div>
                                 <div class="contact-item-value">054-237-4194</div>
                             </div>
                         </a>
                         <a href="mailto:zhara.dabbah@gmail.com" class="contact-item">
                             <div class="contact-icon"><svg class="icon"><use href="#i-mail"/></svg></div>
                             <div>
-                                <div class="contact-item-label">אימייל</div>
+                                <div class="contact-item-label" data-i18n="contact.email">אימייל</div>
                                 <div class="contact-item-value">zhara.dabbah@gmail.com</div>
                             </div>
                         </a>
                         <div class="contact-item">
                             <div class="contact-icon"><svg class="icon"><use href="#i-pin"/></svg></div>
                             <div>
-                                <div class="contact-item-label">מיקום הקליניקה</div>
-                                <div class="contact-item-value">דיר אל-אסד, בענה</div>
+                                <div class="contact-item-label" data-i18n="contact.loc">מיקום הקליניקה</div>
+                                <div class="contact-item-value" data-i18n="contact.locval">דיר אל-אסד, בענה</div>
                             </div>
                         </div>
                         <div class="contact-item">
                             <div class="contact-icon"><svg class="icon"><use href="#i-clock"/></svg></div>
                             <div>
-                                <div class="contact-item-label">שעות פעילות</div>
-                                <div class="contact-item-value">בתיאום מראש</div>
+                                <div class="contact-item-label" data-i18n="contact.hours">שעות פעילות</div>
+                                <div class="contact-item-value" data-i18n="contact.hoursval">בתיאום מראש</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="contact-form reveal reveal-delay-2">
-                    <h3 class="form-title">השאירו פרטים</h3>
-                    <p class="form-subtitle">אחזור אליכם בהקדם בשיחה דיסקרטית</p>
+                    <h3 class="form-title" data-i18n="form.title">השאירו פרטים</h3>
+                    <p class="form-subtitle" data-i18n="form.subtitle">אחזור אליכם בהקדם בשיחה דיסקרטית</p>
                     <form id="contactForm" novalidate>
                         <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;width:0" aria-hidden="true">
                         <div class="form-group">
-                            <label for="cf-name">שם מלא</label>
-                            <input id="cf-name" name="name" type="text" placeholder="הכניסו את שמכם" required>
+                            <label for="cf-name" data-i18n="form.name">שם מלא</label>
+                            <input id="cf-name" name="name" type="text" placeholder="הכניסו את שמכם" data-i18n-placeholder="form.name.ph" required>
                         </div>
                         <div class="form-group">
-                            <label for="cf-phone">טלפון</label>
+                            <label for="cf-phone" data-i18n="form.phone">טלפון</label>
                             <input id="cf-phone" name="phone" type="tel" placeholder="054-000-0000" required>
                         </div>
                         <div class="form-group">
-                            <label for="cf-subject">נושא הפנייה</label>
-                            <input id="cf-subject" name="subject" type="text" placeholder="למשל: טיפול זוגי, הדרכת הורים...">
+                            <label for="cf-subject" data-i18n="form.subject">נושא הפנייה</label>
+                            <input id="cf-subject" name="subject" type="text" placeholder="למשל: טיפול זוגי, הדרכת הורים..." data-i18n-placeholder="form.subject.ph">
                         </div>
                         <div class="form-group">
-                            <label for="cf-message">הודעה (אופציונלי)</label>
-                            <textarea id="cf-message" name="message" placeholder="ספרו בקצרה מה תרצו לשתף..."></textarea>
+                            <label for="cf-message" data-i18n="form.message">הודעה (אופציונלי)</label>
+                            <textarea id="cf-message" name="message" placeholder="ספרו בקצרה מה תרצו לשתף..." data-i18n-placeholder="form.message.ph"></textarea>
                         </div>
-                        <button type="submit" class="form-submit">שליחת פנייה</button>
+                        <button type="submit" class="form-submit" data-i18n="form.submit">שליחת פנייה</button>
                     </form>
                 </div>
             </div>
@@ -1972,11 +2028,11 @@
                 <span>זהרה אסדי</span>
                 <span class="line"></span>
             </div>
-            <p class="footer-text">
+            <p class="footer-text" data-i18n="footer.copy">
                 &copy; 2026 — מטפלת זוגית ומשפחתית מוסמכת | בהסמכה לפסיכותרפיה CBT
             </p>
             <a href="https://sol-ix.ai" target="_blank" rel="noopener" class="footer-built" aria-label="פתיחת אתר Solix AI בחלון חדש">
-                <span>נבנה באהבה על ידי</span>
+                <span data-i18n="footer.built">נבנה באהבה על ידי</span>
                 <img src="images/solix-logo.svg" alt="Solix AI">
             </a>
         </div>
@@ -2004,6 +2060,180 @@
                 localStorage.setItem('zahara-theme', next);
             });
         });
+
+        // ===== I18N =====
+        const I18N = {
+            ar: {
+                'nav.mark': 'ز',
+                'nav.name': 'زهرة أسدي',
+                'nav.role': 'معالجة زوجية وعائلية',
+                'nav.about': 'عن زهرة',
+                'nav.services': 'مجالات العلاج',
+                'nav.process': 'مسار العلاج',
+                'nav.contact': 'تواصل معنا',
+                'nav.cta': 'حجز موعد',
+
+                'hero.badge': 'معالجة زوجية وعائلية مرخّصة',
+                'hero.title': 'فضاء<br><span class="accent">للنموّ والإصغاء<br>وإعادة الاتّصال</span>',
+                'hero.lead': 'مرافقة مهنية وحساسة في فترات الأزمات الزوجية، التغريب الأبوي والصراعات العائلية. فضاء آمن لتغيير حقيقي، مع حساسية ثقافية كاملة وأدوات مبنية على الأدلة من عالم الـ CBT.',
+                'hero.btn1': 'حجز مكالمة تعارف',
+                'hero.btn2': 'مجالات العلاج',
+                'hero.stat1': 'ماجستير في العمل الاجتماعي',
+                'hero.stat2num': 'مرخّصة',
+                'hero.stat2': 'جمعية العلاج الزوجي والعائلي',
+                'hero.stat3': 'في طور الترخيص للعلاج النفسي',
+                'hero.stat4num': 'دير الأسد',
+                'hero.stat4': 'عيادة خاصة',
+
+                'trust.1': 'سرية تامة',
+                'trust.2': 'مهنية معترف بها',
+                'trust.3': 'حساسية ثقافية حقيقية',
+                'trust.4': 'فضاء آمن ومحترم',
+
+                'about.label': 'عن زهرة',
+                'about.title': 'زهرة أسدي — <em>فضاء للشفاء</em>',
+                'about.p1': 'معالجة زوجية وعائلية مرخّصة من قبل الجمعية الإسرائيلية للعلاج الزوجي والعائلي، حاصلة على ماجستير (MSW) وبكالوريوس في العمل الاجتماعي. حالياً في طور الترخيص للعلاج النفسي — علاجات CBT.',
+                'about.p2': 'متخصّصة بشكل فريد في علاج الفقدان والحداد، وذات خبرة واسعة في العمل مع العائلات في حالات الصراع المعقّدة. الفضاء العلاجي عندي مبني على الإصغاء العميق، الاحترام المتبادل والحساسية الثقافية الكاملة، إلى جانب أدوات مبنية على الأدلة من عالم الـ CBT.',
+                'about.tag.cbt': 'في طور الترخيص للعلاج النفسي — CBT',
+                'about.tag.couple': 'علاج زوجي',
+                'about.tag.family': 'علاج عائلي',
+                'about.tag.alienation': 'التغريب الأبوي',
+                'about.tag.grief': 'الفقدان والحداد',
+                'about.tag.parenting': 'إرشاد الأهل',
+                'about.tag.divorce': 'مرافقة في الطلاق',
+
+                'services.label': 'مجالات العلاج',
+                'services.title': 'استجابة مهنية <em>لكل تحدّي</em>',
+                'services.lead': 'كل مسار علاجي مفصّل بشكل شخصي، بأدوات مهنية وحساسية لعالمك الثقافي والعاطفي',
+
+                'svc.alienation.title': 'علاج التغريب الأبوي',
+                'svc.alienation.desc': 'عمل مع الأهل والأبناء على البُعد وإصلاح العلاقة. استعادة الرابط الأبوي بطريقة آمنة ومحترمة.',
+                'svc.couple.title': 'علاج زوجي في الأزمة',
+                'svc.couple.desc': 'التعامل مع البُعد، الإرهاق، مشاكل الثقة والتواصل المؤذي. بناء طريق جديد للاتّصال.',
+                'svc.family.title': 'علاج عائلي',
+                'svc.family.desc': 'إدارة التوترات بين الأجيال والصراعات العائلية. خلق لغة مشتركة وحوار صحّي داخل العائلة.',
+                'svc.cbt.title': 'علاج نفسي فردي (CBT)',
+                'svc.cbt.desc': 'استجابة للقلق، الاكتئاب وتنظيم المشاعر بأدوات مبنية على الأدلة. فضاء شخصي للتأمّل الداخلي والنموّ.',
+                'svc.divorce.title': 'مرافقة في مسار الطلاق',
+                'svc.divorce.desc': 'الإبحار في عملية الانفصال مع الحفاظ على رفاهية الأبناء وتقليل الأذى العاطفي.',
+                'svc.parenting.title': 'إرشاد الأهل',
+                'svc.parenting.desc': 'أدوات عملية للأبوّة في حالات معقّدة. تعزيز الثقة الأبوية والإصغاء للطفل.',
+
+                'values.label': 'نهجي',
+                'values.title': 'ما يميّز <em>الفضاء العلاجي</em>',
+                'val.1.title': 'سرية تامة',
+                'val.1.desc': 'كل ما يُقال في غرفة العلاج يبقى في غرفة العلاج. سرية مطلقة كأساس للثقة.',
+                'val.2.title': 'مسار دقيق',
+                'val.2.desc': 'نهج مبني ومفصّل بشكل شخصي. كل لقاء مبني على أهداف واضحة وقابلة للقياس.',
+                'val.3.title': 'حساسية ثقافية',
+                'val.3.desc': 'فهم عميق للسياق الثقافي إلى جانب المهنية السريرية. علاج يحترم من تكون.',
+
+                'proc.label': 'كيف تسير الأمور',
+                'proc.title': 'مسار <em>العلاج</em>',
+                'proc.lead': 'خمس مراحل واضحة ترافقك من اللحظة الأولى وحتى الإنهاء الناجح',
+                'proc.1.title': 'مكالمة تعارف قصيرة',
+                'proc.1.desc': 'مكالمة هاتفية أوّلية للتعارف، فهم الحاجة وتنسيق التوقّعات. بدون أي تكلفة وبدون أي التزام.',
+                'proc.2.title': 'اللقاء الأول في العيادة',
+                'proc.2.desc': 'لقاء معمّق للتعارف، رسم الواقع وتحديد أهداف العلاج. بناء فضاء من الثقة والأمان.',
+                'proc.3.title': 'بناء مسار مفصّل بشكل شخصي',
+                'proc.3.desc': 'تخطيط مسار العلاج وفقاً لاحتياجاتك الفريدة، بأدوات وأساليب مُثبتة.',
+                'proc.4.title': 'لقاءات منتظمة',
+                'proc.4.desc': 'علاج متواصل ومنتظم مع متابعة التقدّم. كل لقاء يُبنى على الذي قبله نحو تغيير حقيقي.',
+                'proc.5.title': 'تلخيص وإعادة تقييم',
+                'proc.5.desc': 'فحص التقدّم، تعزيز الأدوات المُكتسبة وبلورة خطة للاستمرار باستقلالية ونجاح.',
+
+                'quote.text': 'الخطوة الأولى هي دائماً الأصعب، لكن في اللحظة التي تدخلون فيها إلى الغرفة — ستكتشفون فضاءً من الإصغاء والاحترام والقبول. أنتم لستم وحدكم في هذا.',
+                'quote.author': 'زهرة أسدي',
+
+                'contact.label': 'تواصل معنا',
+                'contact.title': 'لنبدأ <em>الحديث</em>',
+                'contact.lead': 'المكالمة الأولى بدون أي تكلفة وبدون أي التزام. سأكون سعيدة بأن أصغي وأفهم كيف يمكنني المساعدة.',
+                'contact.phone': 'هاتف',
+                'contact.email': 'بريد إلكتروني',
+                'contact.loc': 'موقع العيادة',
+                'contact.locval': 'دير الأسد، بعنة',
+                'contact.hours': 'ساعات العمل',
+                'contact.hoursval': 'بتنسيق مسبق',
+
+                'form.title': 'اتركوا تفاصيلكم',
+                'form.subtitle': 'سأعود إليكم في القريب العاجل بمكالمة سرية',
+                'form.name': 'الاسم الكامل',
+                'form.name.ph': 'أدخلوا اسمكم',
+                'form.phone': 'هاتف',
+                'form.subject': 'موضوع التواصل',
+                'form.subject.ph': 'مثلاً: علاج زوجي، إرشاد الأهل...',
+                'form.message': 'رسالة (اختياري)',
+                'form.message.ph': 'اكتبوا باختصار ما تريدون مشاركته...',
+                'form.submit': 'إرسال',
+                'form.validate': 'الرجاء تعبئة الاسم والهاتف',
+                'form.sending': 'جاري الإرسال...',
+                'form.success': 'تم الإرسال بنجاح ✓',
+                'form.error': 'خطأ في الإرسال — حاولوا مجدداً',
+                'form.network': 'خطأ في الشبكة — حاولوا مجدداً',
+
+                'footer.copy': '© 2026 — معالجة زوجية وعائلية مرخّصة | في طور الترخيص للعلاج النفسي CBT',
+                'footer.built': 'بُني بحب من قبل'
+            }
+        };
+
+        function applyLang(lang) {
+            document.documentElement.setAttribute('lang', lang);
+            const dict = I18N[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const original = el.getAttribute('data-i18n-original') || el.textContent;
+                if (!el.hasAttribute('data-i18n-original')) {
+                    el.setAttribute('data-i18n-original', el.textContent);
+                }
+                if (lang === 'he' || !dict || !dict[key]) {
+                    el.textContent = el.getAttribute('data-i18n-original');
+                } else {
+                    el.textContent = dict[key];
+                }
+            });
+            document.querySelectorAll('[data-i18n-html]').forEach(el => {
+                const key = el.getAttribute('data-i18n-html');
+                if (!el.hasAttribute('data-i18n-html-original')) {
+                    el.setAttribute('data-i18n-html-original', el.innerHTML);
+                }
+                if (lang === 'he' || !dict || !dict[key]) {
+                    el.innerHTML = el.getAttribute('data-i18n-html-original');
+                } else {
+                    el.innerHTML = dict[key];
+                }
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (!el.hasAttribute('data-i18n-placeholder-original')) {
+                    el.setAttribute('data-i18n-placeholder-original', el.placeholder || '');
+                }
+                if (lang === 'he' || !dict || !dict[key]) {
+                    el.placeholder = el.getAttribute('data-i18n-placeholder-original');
+                } else {
+                    el.placeholder = dict[key];
+                }
+            });
+            const langBtns = [document.getElementById('langToggle'), document.getElementById('langToggleMobile')].filter(Boolean);
+            langBtns.forEach(b => {
+                const t = b.querySelector('.lang-toggle-text');
+                if (t) t.textContent = lang === 'he' ? 'AR' : 'HE';
+                b.setAttribute('aria-label', lang === 'he' ? 'التبديل إلى العربية' : 'החלפה לעברית');
+            });
+            localStorage.setItem('zahara-lang', lang);
+        }
+
+        function getLang() { return document.documentElement.getAttribute('lang') || 'he'; }
+
+        const langBtns = [document.getElementById('langToggle'), document.getElementById('langToggleMobile')].filter(Boolean);
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const current = getLang();
+                applyLang(current === 'he' ? 'ar' : 'he');
+            });
+        });
+
+        // Apply saved lang on load
+        applyLang(localStorage.getItem('zahara-lang') || 'he');
 
         // Scroll reveal
         const revealElements = document.querySelectorAll('.reveal');
@@ -2074,15 +2304,18 @@
 
             if (honey) { return; } // bot honeypot
 
+            const lang = getLang();
+            const t = (key, he) => (lang !== 'he' && I18N[lang] && I18N[lang][key]) ? I18N[lang][key] : he;
+
             if (!name || !phone) {
-                btn.textContent = 'מלאו שם וטלפון';
+                btn.textContent = t('form.validate', 'מלאו שם וטלפון');
                 btn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
                 setTimeout(() => { btn.textContent = original; btn.style.background = ''; }, 2500);
                 return;
             }
 
             btn.disabled = true;
-            btn.textContent = 'שולח...';
+            btn.textContent = t('form.sending', 'שולח...');
 
             const payload = {
                 access_key: '1ef7f595-9847-4364-8f26-39c99c6860c1',
@@ -2102,17 +2335,17 @@
                 });
                 const json = await res.json().catch(() => ({}));
                 if (res.ok) {
-                    btn.textContent = 'הפנייה נשלחה בהצלחה ✓';
+                    btn.textContent = t('form.success', 'הפנייה נשלחה בהצלחה ✓');
                     btn.style.background = 'linear-gradient(135deg, #34d399, #10b981)';
                     form.reset();
                     setTimeout(() => { window.location.href = '/tnx'; }, 600);
                     return;
                 } else {
-                    btn.textContent = 'שגיאה בשליחה — נסה שוב';
+                    btn.textContent = t('form.error', 'שגיאה בשליחה — נסה שוב');
                     btn.style.background = 'linear-gradient(135deg, #f87171, #ef4444)';
                 }
             } catch (err) {
-                btn.textContent = 'שגיאת רשת — נסה שוב';
+                btn.textContent = t('form.network', 'שגיאת רשת — נסה שוב');
                 btn.style.background = 'linear-gradient(135deg, #f87171, #ef4444)';
             }
 
