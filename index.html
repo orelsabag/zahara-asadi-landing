@@ -2058,7 +2058,7 @@
             });
         });
 
-        // Form handler — submits to submit.php which emails Zahra
+        // Form handler — sends lead to Zahra via FormSubmit.co
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const form = this;
@@ -2067,6 +2067,12 @@
 
             const name = form.name.value.trim();
             const phone = form.phone.value.trim();
+            const subject = form.subject.value.trim();
+            const message = form.message.value.trim();
+            const honey = form.website.value.trim();
+
+            if (honey) { return; } // bot honeypot
+
             if (!name || !phone) {
                 btn.textContent = 'מלאו שם וטלפון';
                 btn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
@@ -2077,16 +2083,24 @@
             btn.disabled = true;
             btn.textContent = 'שולח...';
 
-            const data = Object.fromEntries(new FormData(form));
+            const payload = {
+                'שם מלא': name,
+                'טלפון': phone,
+                'נושא הפנייה': subject || '(לא מולא)',
+                'הודעה': message || '(לא מולא)',
+                _subject: 'פנייה חדשה מהאתר — ' + name,
+                _template: 'table',
+                _captcha: 'false'
+            };
 
             try {
-                const res = await fetch('submit.php', {
+                const res = await fetch('https://formsubmit.co/ajax/Zahra.dabbah@gmail.com', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(payload)
                 });
                 const json = await res.json().catch(() => ({}));
-                if (res.ok && json.ok) {
+                if (res.ok && (json.success === 'true' || json.success === true)) {
                     btn.textContent = 'הפנייה נשלחה בהצלחה ✓';
                     btn.style.background = 'linear-gradient(135deg, #34d399, #10b981)';
                     form.reset();
