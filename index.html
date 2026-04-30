@@ -2085,17 +2085,17 @@
             btn.textContent = 'שולח...';
 
             const payload = {
+                access_key: '1ef7f595-9847-4364-8f26-39c99c6860c1',
+                from_name: 'אתר זהרה אסדי',
+                subject: 'פנייה חדשה מהאתר — ' + name,
                 'שם מלא': name,
                 'טלפון': phone,
                 'נושא הפנייה': subject || '(לא מולא)',
-                'הודעה': message || '(לא מולא)',
-                _subject: 'פנייה חדשה מהאתר — ' + name,
-                _template: 'table',
-                _captcha: 'false'
+                'הודעה': message || '(לא מולא)'
             };
 
             try {
-                const res = await fetch('https://formsubmit.co/ajax/Zahra.dabbah@gmail.com', {
+                const res = await fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify(payload)
