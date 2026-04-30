@@ -1939,22 +1939,23 @@
                 <div class="contact-form reveal reveal-delay-2">
                     <h3 class="form-title">השאירו פרטים</h3>
                     <p class="form-subtitle">אחזור אליכם בהקדם בשיחה דיסקרטית</p>
-                    <form id="contactForm">
+                    <form id="contactForm" novalidate>
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;width:0" aria-hidden="true">
                         <div class="form-group">
-                            <label>שם מלא</label>
-                            <input type="text" placeholder="הכניסו את שמכם" required>
+                            <label for="cf-name">שם מלא</label>
+                            <input id="cf-name" name="name" type="text" placeholder="הכניסו את שמכם" required>
                         </div>
                         <div class="form-group">
-                            <label>טלפון</label>
-                            <input type="tel" placeholder="054-000-0000" required>
+                            <label for="cf-phone">טלפון</label>
+                            <input id="cf-phone" name="phone" type="tel" placeholder="054-000-0000" required>
                         </div>
                         <div class="form-group">
-                            <label>נושא הפנייה</label>
-                            <input type="text" placeholder="למשל: טיפול זוגי, הדרכת הורים...">
+                            <label for="cf-subject">נושא הפנייה</label>
+                            <input id="cf-subject" name="subject" type="text" placeholder="למשל: טיפול זוגי, הדרכת הורים...">
                         </div>
                         <div class="form-group">
-                            <label>הודעה (אופציונלי)</label>
-                            <textarea placeholder="ספרו בקצרה מה תרצו לשתף..."></textarea>
+                            <label for="cf-message">הודעה (אופציונלי)</label>
+                            <textarea id="cf-message" name="message" placeholder="ספרו בקצרה מה תרצו לשתף..."></textarea>
                         </div>
                         <button type="submit" class="form-submit">שליחת פנייה</button>
                     </form>
@@ -2057,18 +2058,52 @@
             });
         });
 
-        // Form handler
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        // Form handler — submits to submit.php which emails Zahra
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const btn = this.querySelector('.form-submit');
+            const form = this;
+            const btn = form.querySelector('.form-submit');
             const original = btn.textContent;
-            btn.textContent = 'הפנייה נשלחה בהצלחה ✓';
-            btn.style.background = 'linear-gradient(135deg, #34d399, #10b981)';
+
+            const name = form.name.value.trim();
+            const phone = form.phone.value.trim();
+            if (!name || !phone) {
+                btn.textContent = 'מלאו שם וטלפון';
+                btn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+                setTimeout(() => { btn.textContent = original; btn.style.background = ''; }, 2500);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'שולח...';
+
+            const data = Object.fromEntries(new FormData(form));
+
+            try {
+                const res = await fetch('submit.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const json = await res.json().catch(() => ({}));
+                if (res.ok && json.ok) {
+                    btn.textContent = 'הפנייה נשלחה בהצלחה ✓';
+                    btn.style.background = 'linear-gradient(135deg, #34d399, #10b981)';
+                    form.reset();
+                } else {
+                    btn.textContent = 'שגיאה בשליחה — נסה שוב';
+                    btn.style.background = 'linear-gradient(135deg, #f87171, #ef4444)';
+                }
+            } catch (err) {
+                btn.textContent = 'שגיאת רשת — נסה שוב';
+                btn.style.background = 'linear-gradient(135deg, #f87171, #ef4444)';
+            }
+
             setTimeout(() => {
                 btn.textContent = original;
                 btn.style.background = '';
-                this.reset();
-            }, 3000);
+                btn.disabled = false;
+            }, 4000);
         });
 
         // Subtle parallax on hero bg
