@@ -27,7 +27,10 @@
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
             try {
-                var savedLang = localStorage.getItem('zahara-lang') || 'he';
+                // ?lang=ar / ?lang=he from an ad link wins and is remembered (Arabic ads land in Arabic)
+                var urlLang = (location.search.match(/[?&]lang=(he|ar)(?:&|$)/) || [])[1];
+                if (urlLang) { try { localStorage.setItem('zahara-lang', urlLang); } catch (e2) {} }
+                var savedLang = urlLang || localStorage.getItem('zahara-lang') || 'he';
                 document.documentElement.setAttribute('lang', savedLang);
                 document.documentElement.setAttribute('dir', 'rtl');
             } catch (e) {
@@ -2243,8 +2246,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             });
         });
 
-        // Apply saved lang on load
-        applyLang(localStorage.getItem('zahara-lang') || 'he');
+        // Apply the lang the <head> script resolved (URL ?lang= → saved → he)
+        applyLang(getLang());
 
         // Scroll reveal
         const revealElements = document.querySelectorAll('.reveal');
