@@ -2302,7 +2302,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             });
         });
 
-        // Form handler — sends lead to Zahra via FormSubmit.co
+        // Form handler — primary: our endpoint emails Zahra via Gmail and confirms delivery (29.9.2026: a lead
+        // accepted by Web3Forms never reached her inbox); fallback: Web3Forms.
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const form = this;
@@ -2331,6 +2332,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             btn.disabled = true;
             btn.textContent = t('form.sending', 'שולח...');
 
+            const done = () => {
+                btn.textContent = t('form.success', 'הפנייה נשלחה בהצלחה ✓');
+                btn.style.background = 'linear-gradient(135deg, #34d399, #10b981)';
+                form.reset();
+                setTimeout(() => { window.location.href = '/tnx'; }, 600);
+            };
+
+            // 1) primary: answers ok only after Gmail accepted the email to Zahra
+            try {
+                const ctl = new AbortController();
+                const timer = setTimeout(() => ctl.abort(), 8000);
+                const r = await fetch('https://zahara-lead-api.vercel.app/api/lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, subject, message, lang, website: honey }),
+                    signal: ctl.signal
+                });
+                clearTimeout(timer);
+                const j = await r.json().catch(() => ({}));
+                if (r.ok && j.ok === true) { done(); return; }
+            } catch (err) { /* fall through to Web3Forms */ }
+
+            // 2) fallback: Web3Forms
             const payload = {
                 access_key: '1ef7f595-9847-4364-8f26-39c99c6860c1',
                 from_name: 'אתר זהרה אסדי',
@@ -2349,10 +2373,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 });
                 const json = await res.json().catch(() => ({}));
                 if (res.ok) {
-                    btn.textContent = t('form.success', 'הפנייה נשלחה בהצלחה ✓');
-                    btn.style.background = 'linear-gradient(135deg, #34d399, #10b981)';
-                    form.reset();
-                    setTimeout(() => { window.location.href = '/tnx'; }, 600);
+                    done();
                     return;
                 } else {
                     btn.textContent = t('form.error', 'שגיאה בשליחה — נסה שוב');
