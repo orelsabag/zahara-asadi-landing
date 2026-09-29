@@ -2339,22 +2339,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 setTimeout(() => { window.location.href = '/tnx'; }, 600);
             };
 
-            // 1) primary: answers ok only after Gmail accepted the email to Zahra
+            // 1) our channel (Gmail → Zahra's inbox). text/plain = "simple" request: no CORS preflight to fail.
+            const LEAD_API = 'https://zahara-lead-api.vercel.app/api/lead';
+            const leadId = Math.random().toString(36).slice(2, 12) + Date.now().toString(36);   // same id on fetch + beacon → no double mail
+            const leadBody = JSON.stringify({ name, phone, subject, message, lang, website: honey, lead_id: leadId });
+            let why = '';
             try {
                 const ctl = new AbortController();
-                const timer = setTimeout(() => ctl.abort(), 8000);
-                const r = await fetch('https://zahara-lead-api.vercel.app/api/lead', {
+                const timer = setTimeout(() => ctl.abort(), 15000);
+                const r = await fetch(LEAD_API, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, phone, subject, message, lang, website: honey }),
+                    headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+                    body: leadBody,
                     signal: ctl.signal
                 });
                 clearTimeout(timer);
                 const j = await r.json().catch(() => ({}));
                 if (r.ok && j.ok === true) { done(); return; }
-            } catch (err) { /* fall through to Web3Forms */ }
+                why = 'status ' + r.status + ' ' + (j.error || '');
+            } catch (err) { why = (err && (err.name + ': ' + err.message)) || 'fetch failed'; }
 
-            // 2) fallback: Web3Forms
+            // 2) same channel via sendBeacon: no CORS at all, survives the redirect to /tnx
+            try {
+                if (navigator.sendBeacon && navigator.sendBeacon(LEAD_API + '?via=beacon&why=' + encodeURIComponent(why.slice(0, 100)),
+                        new Blob([leadBody], { type: 'text/plain;charset=UTF-8' }))) { done(); return; }
+            } catch (err) { /* last resort below */ }
+
+            // 3) last resort: Web3Forms (its mail tends to land in spam)
             const payload = {
                 access_key: '1ef7f595-9847-4364-8f26-39c99c6860c1',
                 from_name: 'אתר זהרה אסדי',
